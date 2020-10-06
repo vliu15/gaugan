@@ -4,8 +4,7 @@ n_classes: &n_classes 35
 
 train_dataset:
     _target_: modules.dataset.CityscapesDataset
-    # paths: [data/gtFine_trainvaltest/gtFine/train, data/leftImg8bit_trainvaltest/leftImg8bit/train]
-    paths: data
+    paths: [data/gtFine_trainvaltest/gtFine/train, data/leftImg8bit_trainvaltest/leftImg8bit/train]
     img_size: *spatial_size
     n_classes: *n_classes
 
@@ -17,8 +16,7 @@ train_dataloader:
 
 val_dataset:
     _target_: modules.dataset.CityscapesDataset
-    # paths: [data/gtFine_trainvaltest/gtFine/val, data/leftImg8bit_trainvaltest/leftImg8bit/val]
-    paths: data
+    paths: [data/gtFine_trainvaltest/gtFine/val, data/leftImg8bit_trainvaltest/leftImg8bit/val]
     img_size: *spatial_size
     n_classes: *n_classes
 
@@ -30,8 +28,7 @@ val_dataloader:
 
 test_dataset:
     _target_: modules.dataset.CityscapesDataset
-    # paths: [data/gtFine_trainvaltest/gtFine/test, data/leftImg8bit_trainvaltest/leftImg8bit/test]
-    paths: data
+    paths: [data/gtFine_trainvaltest/gtFine/test, data/leftImg8bit_trainvaltest/leftImg8bit/test]
     img_size: *spatial_size
     n_classes: *n_classes
 
@@ -66,4 +63,4 @@ d_optim:
     lr: 0.0004
     betas: [0.0, 0.999]
 
-resume_checkpoint: logs/epoch=0.pt
+resume_checkpoint: null

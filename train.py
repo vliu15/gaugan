@@ -141,14 +141,6 @@ def main():
         get_lr_lambda(config.train.epochs, config.train.decay_after),
     )
 
-    torch.save({
-        'gaugan_model_dict': gaugan.state_dict(),
-        'g_optim_dict': g_optimizer.state_dict(),
-        'd_optim_dict': d_optimizer.state_dict(),
-        'epoch': 0,
-    }, os.path.join(config.train.log_dir, f'epoch={0}.pt'))
-    return
-
     start_epoch = 0
     if config.resume_checkpoint is not None:
         state_dict = torch.load(config.resume_checkpoint)

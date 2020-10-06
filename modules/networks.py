@@ -30,14 +30,16 @@ import torch.nn.functional as F
 class SPADE(nn.Module):
     ''' Implements BatchNorm2d with Spatially Adaptive Denormalization '''
 
+    hid_channels = 128
+
     def __init__(self, channels: int, cond_channels: int):
         super().__init__()
 
         self.batchnorm = nn.BatchNorm2d(channels)
         self.spade = nn.Sequential(
-            nn.Conv2d(cond_channels, channels, kernel_size=3, padding=1),
+            nn.Conv2d(cond_channels, self.hid_channels, kernel_size=3, padding=1),
             nn.ReLU(inplace=True),
-            nn.Conv2d(channels, 2 * channels, kernel_size=3, padding=1),
+            nn.Conv2d(self.hid_channels, 2 * channels, kernel_size=3, padding=1),
         )
 
     def forward(self, x, seg):
@@ -156,7 +158,7 @@ class Generator(nn.Module):
         self.upsample = nn.Upsample(scale_factor=2)
         self.res_blocks = nn.ModuleList()
         for i in reversed(range(n_upsample)):
-            in_channels = min(self.max_channels, base_channels * 2 ** (i+1))
+            in_channels = self.max_channels if i == n_upsample - 1 else min(self.max_channels, base_channels * 2 ** (i+1))
             out_channels = min(self.max_channels, base_channels * 2 ** i)
             self.res_blocks.append(ResidualBlock(in_channels, out_channels, n_classes))
 
