@@ -1,0 +1,69 @@
+# config for cityscapes dataset
+spatial_size: &spatial_size [256, 512]
+n_classes: &n_classes 35
+
+train_dataset:
+    _target_: modules.dataset.CityscapesDataset
+    # paths: [data/gtFine_trainvaltest/gtFine/train, data/leftImg8bit_trainvaltest/leftImg8bit/train]
+    paths: data
+    img_size: *spatial_size
+    n_classes: *n_classes
+
+train_dataloader:
+    batch_size: 16
+    drop_last: false
+    shuffle: true
+    pin_memory: true
+
+val_dataset:
+    _target_: modules.dataset.CityscapesDataset
+    # paths: [data/gtFine_trainvaltest/gtFine/val, data/leftImg8bit_trainvaltest/leftImg8bit/val]
+    paths: data
+    img_size: *spatial_size
+    n_classes: *n_classes
+
+val_dataloader:
+    batch_size: 64
+    drop_last: false
+    shuffle: true
+    pin_memory: true
+
+test_dataset:
+    _target_: modules.dataset.CityscapesDataset
+    # paths: [data/gtFine_trainvaltest/gtFine/test, data/leftImg8bit_trainvaltest/leftImg8bit/test]
+    paths: data
+    img_size: *spatial_size
+    n_classes: *n_classes
+
+# test dataloader only for high-res inference
+test_dataloader:
+    batch_size: 1
+    drop_last: false
+    shuffle: true
+    pin_memory: true
+
+gaugan:
+    _target_: modules.networks.GauGAN
+    n_classes: *n_classes
+    spatial_size: *spatial_size
+    base_channels: 64
+    z_dim: 256
+    n_upsample: 6
+    n_disc_layers: 3
+    n_disc: 2
+
+train:
+    epochs: 200
+    decay_after: 100
+    log_dir: logs
+    save_every: 5
+
+g_optim:
+    lr: 0.0001
+    betas: [0.0, 0.999]
+
+d_optim:
+    lr: 0.0004
+    betas: [0.0, 0.999]
+
+resume_checkpoint: logs/epoch=0.pt
