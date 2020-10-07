@@ -42,7 +42,7 @@ def parse_arguments():
 
 
 def train(dataloaders, gaugan, optimizers, schedulers, train_config, start_epoch, device):
-    ''' Training loop for Pix2PixHD '''
+    ''' Training loop for GauGAN '''
     # unpack all modules
     train_dataloader, val_dataloader = dataloaders
     g_optimizer, d_optimizer = optimizers
